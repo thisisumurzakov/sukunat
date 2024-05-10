@@ -3,7 +3,7 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=150)
-    icon = models.ImageField(upload_to='articles/category/', blank=True, null=True)
+    icon = models.FileField(upload_to='articles/category/', blank=True, null=True)
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
