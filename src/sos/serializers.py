@@ -7,3 +7,8 @@ class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = ['id', 'phone_number', 'name']
+
+
+class DistressSignalSerializer(serializers.Serializer):
+    latitude = serializers.FloatField()
+    longitude = serializers.FloatField()

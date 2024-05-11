@@ -1,15 +1,16 @@
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Contact
-from .serializers import ContactSerializer
+from .serializers import ContactSerializer, DistressSignalSerializer
 from .tasks import send_distress_signal
 
 
 class ContactCreateGetUpdateView(GenericAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
     serializer_class = ContactSerializer
 
     def post(self, request, *args, **kwargs):
@@ -44,10 +45,19 @@ class ContactCreateGetUpdateView(GenericAPIView):
 class SendDistressSignalView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(request_body=DistressSignalSerializer)
     def post(self, request):
         try:
+            serializer = DistressSignalSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            latitude = serializer.validated_data['latitude']
+            longitude = serializer.validated_data['longitude']
+            if not latitude or not longitude:
+                return Response({"error": "Location coordinates (latitude and longitude) are required."}, status=400)
+
             contact = Contact.objects.get(user=request.user)
-            send_distress_signal.delay(contact.id)
+            # Queue the Celery task
+            send_distress_signal.delay(str(contact.phone_number), latitude, longitude)
             return Response({"message": "Distress signal is being processed."})
         except Contact.DoesNotExist:
             return Response({'message': 'Contact not found'}, status=404)

@@ -8,7 +8,7 @@ from .serailizers import CategorySerializer, ArticleListSerializer, ArticleDetai
 
 
 class CategoryListView(ListAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
     serializer_class = CategorySerializer
 
     def get_queryset(self):
@@ -16,7 +16,7 @@ class CategoryListView(ListAPIView):
 
 
 class ArticleListView(ListAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
     pagination_class = StandardResultsPagination
     serializer_class = ArticleListSerializer
 
@@ -30,6 +30,6 @@ class ArticleListView(ListAPIView):
 
 
 class ArticleDetailView(RetrieveAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
     queryset = Article.objects.all()
     serializer_class = ArticleDetailSerializer

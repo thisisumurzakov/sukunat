@@ -8,7 +8,7 @@ from .serializers import VideoCourseSerializer, VideoSerializer
 
 
 class VideoCourseList(ListAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
     pagination_class = StandardResultsPagination
     serializer_class = VideoCourseSerializer
 
@@ -17,7 +17,7 @@ class VideoCourseList(ListAPIView):
 
 
 class VideoList(ListAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
     pagination_class = StandardResultsPagination
     serializer_class = VideoSerializer
 
