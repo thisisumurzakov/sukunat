@@ -178,7 +178,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=3660),
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1)
 }
 
@@ -191,6 +191,17 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")  # Use the service name "redis" which is the name of the Redis container in your docker-compose.yml
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND")  # Use the same Redis URL for result backend
+CELERY_TIMEZONE = 'UTC'
+# Celery beat settings
+# CELERY_BEAT_SCHEDULE = {
+#     'update_order_statuses': {
+#         'task': 'blockchain_transaction.tasks.update_order_statuses',  # Replace with the actual path to your tasks.py
+#         'schedule': 300,  # 600 seconds = 10 minutes
+#     },
+# }
 
 # Redis configuration
 REDIS_HOST = 'redis'

@@ -1,8 +1,11 @@
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .models import Contact
 from .serializers import ContactSerializer
+from .tasks import send_distress_signal
 
 
 class ContactCreateGetUpdateView(GenericAPIView):
@@ -36,3 +39,15 @@ class ContactCreateGetUpdateView(GenericAPIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
+
+
+class SendDistressSignalView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            contact = Contact.objects.get(user=request.user)
+            send_distress_signal.delay(contact.id)
+            return Response({"message": "Distress signal is being processed."})
+        except Contact.DoesNotExist:
+            return Response({'message': 'Contact not found'}, status=404)
