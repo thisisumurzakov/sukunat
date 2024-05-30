@@ -1,10 +1,12 @@
 from celery import shared_task
 
+
 @shared_task
 def send_distress_signal(phone_number, latitude, longitude):
-
     # Format URLs for Google Maps and Yandex Maps
-    google_maps_url = f"https://www.google.com/maps/search/?api=1&query={latitude},{longitude}"
+    google_maps_url = (
+        f"https://www.google.com/maps/search/?api=1&query={latitude},{longitude}"
+    )
     yandex_maps_url = f"https://yandex.com/maps/?text={latitude},{longitude}"
 
     # Simulate sending an SMS

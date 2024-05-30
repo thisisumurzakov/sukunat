@@ -23,7 +23,7 @@ from rest_framework import permissions
 schema_view = get_schema_view(
     openapi.Info(
         title="SUKUNAT API",
-        default_version='v1',
+        default_version="v1",
         description="API documentation for SUKUNAT",
     ),
     public=True,
@@ -31,12 +31,15 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-
-    path('v1/users/', include('users.urls')),
-    path('v1/videocourses/', include('videocourses.urls')),
-    path('v1/articles/', include('articles.urls')),
-    path('v1/sos/', include('sos.urls')),
-
+    path("admin/", admin.site.urls),
+    path(
+        "swagger/",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-ui",
+    ),
+    path("v1/users/", include("users.urls")),
+    path("v1/videocourses/", include("videocourses.urls")),
+    path("v1/articles/", include("articles.urls")),
+    path("v1/sos/", include("sos.urls")),
+    path("v1/forum/", include("forum.urls")),
 ]

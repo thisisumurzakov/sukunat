@@ -4,70 +4,69 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('articles', '0002_alter_article_options'),
+        ("articles", "0002_alter_article_options"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='article',
-            name='description_en',
+            model_name="article",
+            name="description_en",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='article',
-            name='description_ru',
+            model_name="article",
+            name="description_ru",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='article',
-            name='description_uz',
+            model_name="article",
+            name="description_uz",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='article',
-            name='description_uz_cyrl',
+            model_name="article",
+            name="description_uz_cyrl",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='article',
-            name='title_en',
+            model_name="article",
+            name="title_en",
             field=models.CharField(max_length=250, null=True),
         ),
         migrations.AddField(
-            model_name='article',
-            name='title_ru',
+            model_name="article",
+            name="title_ru",
             field=models.CharField(max_length=250, null=True),
         ),
         migrations.AddField(
-            model_name='article',
-            name='title_uz',
+            model_name="article",
+            name="title_uz",
             field=models.CharField(max_length=250, null=True),
         ),
         migrations.AddField(
-            model_name='article',
-            name='title_uz_cyrl',
+            model_name="article",
+            name="title_uz_cyrl",
             field=models.CharField(max_length=250, null=True),
         ),
         migrations.AddField(
-            model_name='category',
-            name='name_en',
+            model_name="category",
+            name="name_en",
             field=models.CharField(max_length=150, null=True),
         ),
         migrations.AddField(
-            model_name='category',
-            name='name_ru',
+            model_name="category",
+            name="name_ru",
             field=models.CharField(max_length=150, null=True),
         ),
         migrations.AddField(
-            model_name='category',
-            name='name_uz',
+            model_name="category",
+            name="name_uz",
             field=models.CharField(max_length=150, null=True),
         ),
         migrations.AddField(
-            model_name='category',
-            name='name_uz_cyrl',
+            model_name="category",
+            name="name_uz_cyrl",
             field=models.CharField(max_length=150, null=True),
         ),
     ]

@@ -8,6 +8,6 @@ User = get_user_model()
 
 
 class Contact(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contacts')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="contacts")
     phone_number = PhoneNumberField(_("phone number"))
     name = models.CharField(max_length=150)

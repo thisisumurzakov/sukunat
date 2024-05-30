@@ -26,5 +26,5 @@ class VideoList(ListAPIView):
         This view should return a list of all the videos
         for the video course as determined by the video_course_id portion of the URL.
         """
-        video_course_id = self.kwargs['video_course_id']
+        video_course_id = self.kwargs["video_course_id"]
         return Video.objects.filter(video_course_id=video_course_id)

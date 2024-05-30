@@ -21,4 +21,3 @@ class ArticleDetailSerializer(serializers.Serializer):
     image = serializers.ImageField()
     created_at = serializers.DateTimeField()
     updated_at = serializers.DateTimeField()
-

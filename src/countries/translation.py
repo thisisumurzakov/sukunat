@@ -4,4 +4,4 @@ from .models import Country
 
 @register(Country)
 class CountryTranslationOptions(TranslationOptions):
-    fields = ('name', 'code')
+    fields = ("name", "code")

@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('videocourses', '0002_videocourse_lang'),
+        ("videocourses", "0002_videocourse_lang"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='videocourse',
-            options={'ordering': ['-created_at']},
+            name="videocourse",
+            options={"ordering": ["-created_at"]},
         ),
     ]
