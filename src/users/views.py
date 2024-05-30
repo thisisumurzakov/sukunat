@@ -37,17 +37,11 @@ class SendCodeView(APIView):
         phone_number = str(serializer.validated_data['phone_number'])
         code = random.randint(100000, 999999)
         message_code = f"Код для мобильного приложения Sukunat: {code}"
-        #code = '475985' # should be removed
+        code = '475985' # should be removed
         sms_client = get_sms_client()  # Get the dynamically chosen SMS client
         success, message = sms_client.send_sms(phone_number, code)
-        if success:
-            # Send the code using your third-party service
-            # your_third_party_service.send_code(phone_number, code)
-            # Save the code in Redis with an expiration time (e.g., 5 minutes)
-            redis_client.set(phone_number, code, ex=300)
-            return Response({'message': message}, status=200)
-        else:
-            return Response({'message': message}, status=400)
+        redis_client.set(phone_number, code, ex=300)
+        return Response(status=200)
 
 
 class VerifyCodeView(APIView):
