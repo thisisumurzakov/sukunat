@@ -217,3 +217,5 @@ CHANNEL_LAYERS = {
     },
 }
 
+# This can be changed to another client as needed
+SMS_CLIENT_CLASS = "users.api_clients.eskiz_sms_client.EskizSmsClient"

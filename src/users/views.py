@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from config.utils import get_sms_client
 from .models import User, FCMToken
 from .serializers import UserSerializer, VerifyCodeSerializer, SendCodeSerializer, LogutSerializer
 
@@ -35,13 +36,18 @@ class SendCodeView(APIView):
         serializer.is_valid(raise_exception=True)
         phone_number = str(serializer.validated_data['phone_number'])
         code = random.randint(100000, 999999)
-        code = '475985' # should be removed
-
-        # Send the code using your third-party service
-        # your_third_party_service.send_code(phone_number, code)
-        # Save the code in Redis with an expiration time (e.g., 5 minutes)
-        redis_client.set(phone_number, code, ex=300)
-        return Response(status=status.HTTP_200_OK)
+        message_code = f"Код для мобильного приложения Sukunat: {code}"
+        #code = '475985' # should be removed
+        sms_client = get_sms_client()  # Get the dynamically chosen SMS client
+        success, message = sms_client.send_sms(phone_number, code)
+        if success:
+            # Send the code using your third-party service
+            # your_third_party_service.send_code(phone_number, code)
+            # Save the code in Redis with an expiration time (e.g., 5 minutes)
+            redis_client.set(phone_number, code, ex=300)
+            return Response({'message': message}, status=200)
+        else:
+            return Response({'message': message}, status=400)
 
 
 class VerifyCodeView(APIView):
