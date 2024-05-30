@@ -1,35 +1,43 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from phonenumber_field.modelfields import PhoneNumberField
 
 
 class UserManager(BaseUserManager):
     def create_user(self, phone_number, password=None, **extra_fields):
         if not phone_number:
-            raise ValueError('Users must have a phone number')
+            raise ValueError("Users must have a phone number")
         user = self.model(phone_number=phone_number, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
     def create_superuser(self, phone_number, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
 
         return self.create_user(phone_number, password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
+    profile_photo = models.ImageField(
+        upload_to="profile_photos/", blank=True, null=True
+    )
     phone_number = PhoneNumberField(_("phone number"), unique=True)
-    first_name = models.CharField(_("first name"), max_length=150, blank=True, null=True)
+    first_name = models.CharField(
+        _("first name"), max_length=150, blank=True, null=True
+    )
     last_name = models.CharField(_("last name"), max_length=150, blank=True, null=True)
     email = models.EmailField(_("email address"), blank=True, null=True)
     is_email_verified = models.BooleanField(default=False)
@@ -50,10 +58,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'phone_number'
+    USERNAME_FIELD = "phone_number"
 
     def __str__(self):
-        return f'{self.phone_number}'
+        return f"{self.phone_number}"
 
     class Meta:
         verbose_name = _("user")
@@ -68,9 +76,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class FCMToken(models.Model):
-    user = models.ForeignKey(User, related_name='fcm_tokens', on_delete=models.CASCADE)
-    token = models.CharField(_("FCM Token"), max_length=255, unique=True, null=True, blank=True)
+    user = models.ForeignKey(User, related_name="fcm_tokens", on_delete=models.CASCADE)
+    token = models.CharField(
+        _("FCM Token"), max_length=255, unique=True, null=True, blank=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.user.phone_number} - {self.token}'
+        return f"{self.user.phone_number} - {self.token}"

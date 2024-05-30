@@ -5,15 +5,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('articles', '0003_article_description_en_article_description_ru_and_more'),
+        ("articles", "0003_article_description_en_article_description_ru_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='article',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='articles', to='articles.category'),
+            model_name="article",
+            name="category",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="articles",
+                to="articles.category",
+            ),
         ),
     ]

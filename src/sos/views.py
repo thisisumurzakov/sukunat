@@ -18,7 +18,7 @@ class ContactCreateGetUpdateView(GenericAPIView):
             return Response({"message": "You have already added a contact"}, status=400)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.validated_data['user'] = request.user
+        serializer.validated_data["user"] = request.user
         serializer.save()
         return Response(serializer.data, status=201)
 
@@ -27,13 +27,13 @@ class ContactCreateGetUpdateView(GenericAPIView):
             contact = Contact.objects.get(user=request.user)
             return Response(self.get_serializer(contact).data, status=200)
         except Contact.DoesNotExist:
-            return Response({'message': 'Contact not found'}, status=404)
+            return Response({"message": "Contact not found"}, status=404)
 
     def put(self, request, *args, **kwargs):
         try:
             contact = Contact.objects.get(user=request.user)
         except Contact.DoesNotExist:
-            return Response({'message': 'Contact not found'}, status=404)
+            return Response({"message": "Contact not found"}, status=404)
 
         serializer = self.get_serializer(contact, data=request.data)
         if serializer.is_valid():
@@ -50,14 +50,19 @@ class SendDistressSignalView(APIView):
         try:
             serializer = DistressSignalSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            latitude = serializer.validated_data['latitude']
-            longitude = serializer.validated_data['longitude']
+            latitude = serializer.validated_data["latitude"]
+            longitude = serializer.validated_data["longitude"]
             if not latitude or not longitude:
-                return Response({"error": "Location coordinates (latitude and longitude) are required."}, status=400)
+                return Response(
+                    {
+                        "error": "Location coordinates (latitude and longitude) are required."
+                    },
+                    status=400,
+                )
 
             contact = Contact.objects.get(user=request.user)
             # Queue the Celery task
             send_distress_signal.delay(str(contact.phone_number), latitude, longitude)
             return Response({"message": "Distress signal is being processed."})
         except Contact.DoesNotExist:
-            return Response({'message': 'Contact not found'}, status=404)
+            return Response({"message": "Contact not found"}, status=404)

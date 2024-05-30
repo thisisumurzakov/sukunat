@@ -18,7 +18,9 @@ class BasePhoneSerializer(serializers.Serializer):
         # Check if the country code is supported
         country_code = f"+{phone_number.country_code}"
         if not Country.objects.filter(phone_code=country_code, is_active=True).exists():
-            raise serializers.ValidationError("Phone number from this country is not supported")
+            raise serializers.ValidationError(
+                "Phone number from this country is not supported"
+            )
 
         return value
 
@@ -37,19 +39,27 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'phone_number', 'first_name', 'last_name', 'email', 'is_email_verified', 'profile_photo')
-        read_only_fields = ('phone_number', 'is_email_verified', 'id')
+        fields = (
+            "id",
+            "phone_number",
+            "first_name",
+            "last_name",
+            "email",
+            "is_email_verified",
+            "profile_photo",
+        )
+        read_only_fields = ("phone_number", "is_email_verified", "id")
 
     def update(self, instance, validated_data):
         # Check if 'email' is in the validated data and differs from the current email
-        if 'email' in validated_data and instance.email != validated_data.get('email'):
-            instance.email = validated_data.get('email')
+        if "email" in validated_data and instance.email != validated_data.get("email"):
+            instance.email = validated_data.get("email")
             # Set is_email_verified to False as the email has changed, ensuring its verification status is reset
             instance.is_email_verified = False
 
         # Update first name and last name without altering is_email_verified based on frontend input
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.first_name = validated_data.get("first_name", instance.first_name)
+        instance.last_name = validated_data.get("last_name", instance.last_name)
 
         instance.save()
         return instance

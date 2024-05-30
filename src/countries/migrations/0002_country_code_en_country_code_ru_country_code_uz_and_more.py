@@ -4,50 +4,49 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('countries', '0001_initial'),
+        ("countries", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='country',
-            name='code_en',
+            model_name="country",
+            name="code_en",
             field=models.CharField(max_length=10, null=True),
         ),
         migrations.AddField(
-            model_name='country',
-            name='code_ru',
+            model_name="country",
+            name="code_ru",
             field=models.CharField(max_length=10, null=True),
         ),
         migrations.AddField(
-            model_name='country',
-            name='code_uz',
+            model_name="country",
+            name="code_uz",
             field=models.CharField(max_length=10, null=True),
         ),
         migrations.AddField(
-            model_name='country',
-            name='code_uz_cyrl',
+            model_name="country",
+            name="code_uz_cyrl",
             field=models.CharField(max_length=10, null=True),
         ),
         migrations.AddField(
-            model_name='country',
-            name='name_en',
+            model_name="country",
+            name="name_en",
             field=models.CharField(max_length=150, null=True),
         ),
         migrations.AddField(
-            model_name='country',
-            name='name_ru',
+            model_name="country",
+            name="name_ru",
             field=models.CharField(max_length=150, null=True),
         ),
         migrations.AddField(
-            model_name='country',
-            name='name_uz',
+            model_name="country",
+            name="name_uz",
             field=models.CharField(max_length=150, null=True),
         ),
         migrations.AddField(
-            model_name='country',
-            name='name_uz_cyrl',
+            model_name="country",
+            name="name_uz_cyrl",
             field=models.CharField(max_length=150, null=True),
         ),
     ]
