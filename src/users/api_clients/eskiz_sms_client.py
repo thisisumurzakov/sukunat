@@ -2,6 +2,8 @@ import os
 
 import redis
 import requests
+from django.conf import settings
+
 from .sms_client_interface import SMSClientInterface
 
 
@@ -10,7 +12,12 @@ class EskizSmsClient(SMSClientInterface):
         self.base_url = "https://notify.eskiz.uz/api"
         self.email = os.getenv("ESKIZ_EMAIL")
         self.password = os.getenv("ESKIZ_PASSWORD")
-        self.redis_client = redis.StrictRedis(host="localhost", port=6379, db=0)
+        self.redis_client = redis.StrictRedis(
+            host=settings.REDIS_HOST,
+            port=settings.REDIS_PORT,
+            db=settings.REDIS_DB,
+            decode_responses=True,
+        )
 
     def authenticate(self):
         token = self.redis_client.get("eskiz_token")
