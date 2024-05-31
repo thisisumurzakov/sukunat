@@ -41,8 +41,8 @@ class SendCodeView(APIView):
         code = random.randint(100000, 999999)
         message_code = f"Код для мобильного приложения Sukunat: {code}"
         code = "475985"  # should be removed
-        sms_client = get_sms_client()  # Get the dynamically chosen SMS client
-        success, message = sms_client.send_sms(phone_number, code)
+        # sms_client = get_sms_client()  # Get the dynamically chosen SMS client
+        # success, message = sms_client.send_sms(phone_number, code)
         redis_client.set(phone_number, code, ex=300)
         return Response(status=200)
 
