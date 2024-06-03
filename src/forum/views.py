@@ -13,7 +13,7 @@ from .serializers import PostSerializer, PostDetailSerializer
 class PostListView(ListCreateAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
-    parser_classes = StandardCursorPagination
+    pagination_class = StandardCursorPagination
 
     def get_queryset(self):
         return Post.objects.filter(parent__isnull=True).prefetch_related("tags")
