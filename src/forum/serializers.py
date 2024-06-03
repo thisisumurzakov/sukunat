@@ -30,7 +30,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, required=False)
     is_author = serializers.SerializerMethodField()
-    author = AuthorSerializer(read_only=True)
+    user = AuthorSerializer(read_only=True)
 
     class Meta:
         model = Post
@@ -44,7 +44,6 @@ class PostSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "is_author",
-            "author",
         ]
         extra_kwargs = {
             "user": {"read_only": True},
