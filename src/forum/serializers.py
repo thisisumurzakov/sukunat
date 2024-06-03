@@ -30,7 +30,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, required=False)
     is_author = serializers.SerializerMethodField()
-    user = AuthorSerializer(read_only=True)
+    author = AuthorSerializer(read_only=True)
 
     class Meta:
         model = Post
@@ -44,6 +44,7 @@ class PostSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "is_author",
+            "author",
         ]
         extra_kwargs = {
             "user": {"read_only": True},
@@ -54,7 +55,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         tags_data = validated_data.pop("tags", [])
-        post = Post.objects.create(user=self.context["request"].user, **validated_data)
+        post = Post.objects.create(**validated_data)
         for tag_data in tags_data:
             tag, created = Tag.objects.get_or_create(**tag_data)
             post.tags.add(tag)
