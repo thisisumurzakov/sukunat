@@ -74,4 +74,6 @@ class PostDetailSerializer(PostSerializer):
 
     def get_replies(self, obj):
         replies = obj.replies.filter()
-        return PostSerializer(replies, many=True).data
+        return PostSerializer(
+            replies, many=True, context={"request": self.context.get("request")}
+        ).data
