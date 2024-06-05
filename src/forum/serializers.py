@@ -44,6 +44,7 @@ class PostSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "is_author",
+            "parent",
         ]
         extra_kwargs = {
             "user": {"read_only": True},
