@@ -18,17 +18,32 @@
 
         var marker = L.marker([0, 0]).addTo(map);
         var trackingId = '{{ tracking_id }}';
-        var webSocketURL = "ws://" +  window.location.hostname + ":9001/ws/location/" + trackingId + "/";
+        var scheme = window.location.protocol === "https:" ? "wss://" : "ws://";
+        var webSocketURL = scheme + window.location.hostname + ":9001/ws/location/" + trackingId + "/";
         var ws = new WebSocket(webSocketURL);
 
+        ws.onopen = function() {
+            console.log('WebSocket connection established');
+        };
+        ws.onerror = function(event) {
+            console.error("WebSocket error observed:", event);
+        };
+
+        ws.onclose = function(event) {
+            console.log("WebSocket is closed now. Reason:", event.reason);
+        };
+
         ws.onmessage = function(event) {
+            console.log("Message received: ", event.data);
             var data = JSON.parse(event.data);
             var lat = data.latitude;
             var lon = data.longitude;
 
+            console.log("Latitude: " + lat + ", Longitude: " + lon);
             marker.setLatLng([lat, lon]);
             map.panTo([lat, lon]);
         };
+
     </script>
 </body>
 </html>

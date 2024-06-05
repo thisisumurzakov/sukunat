@@ -5,7 +5,6 @@ import json
 
 class LocationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        await self.accept()
         self.room_name = self.scope["url_route"]["kwargs"]["tracking_id"]
         self.room_group_name = f"live_location_{self.room_name}"
 
