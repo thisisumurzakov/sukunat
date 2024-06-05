@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Location Tracker</title>
+    <!-- Include Leaflet.js -->
+</head>
+<body>
+    <div id="mapid" style="height: 400px;"></div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script>
+        var map = L.map('mapid').setView([0, 0], 13);  // Initial dummy coordinates
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        var marker = L.marker([0, 0]).addTo(map);
+        var trackingId = '{{ tracking_id }}';
+        var webSocketURL = "ws://" +  window.location.hostname + ":9001/ws/location/" + trackingId + "/";
+        var ws = new WebSocket(webSocketURL);
+
+        ws.onmessage = function(event) {
+            var data = JSON.parse(event.data);
+            var lat = data.latitude;
+            var lon = data.longitude;
+
+            marker.setLatLng([lat, lon]);
+            map.panTo([lat, lon]);
+        };
+    </script>
+</body>
+</html>

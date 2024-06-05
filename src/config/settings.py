@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "drf_yasg",
     "django_filters",
+    "channels",
     "users",
     "countries",
     "videocourses",
@@ -213,3 +214,15 @@ CHANNEL_LAYERS = {
 
 # This can be changed to another client as needed
 SMS_CLIENT_CLASS = "users.api_clients.eskiz_sms_client.EskizSmsClient"
+
+
+ASGI_APPLICATION = "config.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
