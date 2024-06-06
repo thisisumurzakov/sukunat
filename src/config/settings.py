@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "drf_yasg",
     "django_filters",
+    "channels",
     "users",
     "countries",
     "videocourses",
@@ -213,3 +214,38 @@ CHANNEL_LAYERS = {
 
 # This can be changed to another client as needed
 SMS_CLIENT_CLASS = "users.api_clients.eskiz_sms_client.EskizSmsClient"
+
+
+ASGI_APPLICATION = "config.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "django.channels": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}

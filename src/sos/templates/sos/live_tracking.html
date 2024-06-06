@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Location Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <style>
+        body, html {
+            height: 100%; /* Ensures that the body and html occupy full viewport height */
+            margin: 0; /* Removes default margin */
+            padding: 0; /* Removes default padding */
+            overflow: hidden; /* Prevents scrollbars from appearing when not necessary */
+        }
+        #mapid {
+            width: 100vw; /* Full viewport width */
+            height: 100vh; /* Full viewport height */
+            position: absolute; /* Ensures that the div is positioned relative to the viewport */
+        }
+    </style>
+    <!-- Include Leaflet.js -->
+</head>
+<body>
+    <div id="mapid"></div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script>
+        var map = L.map('mapid').setView([0, 0], 13);  // Initial dummy coordinates
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        var marker = L.marker([0, 0]).addTo(map);
+        var trackingId = '{{ tracking_id }}';
+        var scheme = window.location.protocol === "https:" ? "wss://" : "ws://";
+        var webSocketURL = scheme + window.location.hostname + ":9001/ws/location/" + trackingId + "/";
+        console.log("Connecting to WebSocket at:", webSocketURL);
+        var ws = new WebSocket(webSocketURL);
+
+        ws.onopen = function() {
+            console.log('WebSocket connection established');
+        };
+
+        ws.onerror = function(event) {
+            console.error("WebSocket error observed:", event);
+        };
+
+        ws.onclose = function(event) {
+            console.log("WebSocket is closed now. Reason:", event.reason);
+        };
+
+        ws.onmessage = function(event) {
+            console.log("Message received: ", event.data);
+            var data = JSON.parse(event.data);
+            var lat = data.latitude;
+            var lon = data.longitude;
+
+            console.log("Latitude: " + lat + ", Longitude: " + lon);
+            marker.setLatLng([lat, lon]);
+            map.panTo([lat, lon]);
+        };
+    </script>
+</body>
+</html>

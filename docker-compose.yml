@@ -54,5 +54,20 @@ services:
       - redis
       - db
 
+  asgi:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    command: daphne -b 0.0.0.0 -p 9001 config.asgi:application
+    volumes:
+      - ./src/:/usr/src/src/
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "9001:9001"
+
 volumes:
   postgres_data:

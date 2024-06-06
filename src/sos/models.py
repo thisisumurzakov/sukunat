@@ -11,3 +11,10 @@ class Contact(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="contacts")
     phone_number = PhoneNumberField(_("phone number"))
     name = models.CharField(max_length=150)
+
+
+class TrackingSession(models.Model):
+    track_id = models.CharField(max_length=36, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

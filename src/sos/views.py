@@ -1,10 +1,14 @@
+import uuid
+
+from django.shortcuts import render
+from django.urls import reverse
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Contact
+from .models import Contact, TrackingSession
 from .serializers import ContactSerializer, DistressSignalSerializer
 from .tasks import send_distress_signal
 
@@ -61,8 +65,26 @@ class SendDistressSignalView(APIView):
                 )
 
             contact = Contact.objects.get(user=request.user)
-            # Queue the Celery task
-            send_distress_signal.delay(str(contact.phone_number), latitude, longitude)
-            return Response({"message": "Distress signal is being processed."})
+
+            tracking_id = uuid.uuid4()
+            live_tracking_url = request.build_absolute_uri(
+                reverse("live_tracking", args=[tracking_id])
+            )
+
+            contact = Contact.objects.get(user=request.user)
+            send_distress_signal.delay(str(contact.phone_number), live_tracking_url)
+
+            return Response(
+                {
+                    "message": "Distress signal is being processed.",
+                    "tracking_url": live_tracking_url,
+                }
+            )
+            # send_distress_signal.delay(str(contact.phone_number), latitude, longitude)
+            # return Response({"message": "Distress signal is being processed."})
         except Contact.DoesNotExist:
             return Response({"message": "Contact not found"}, status=404)
+
+
+def live_tracking(request, tracking_id):
+    return render(request, "sos/live_tracking.html", {"tracking_id": tracking_id})
