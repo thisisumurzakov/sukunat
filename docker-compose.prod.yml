@@ -29,7 +29,7 @@ services:
       - media_volume:/home/app/web/mediafiles
       - /etc/letsencrypt:/etc/letsencrypt:ro
     ports:
-      - 1338:80
+      - 1338:1338
     depends_on:
       - web
 
