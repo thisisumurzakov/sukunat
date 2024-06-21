@@ -180,7 +180,8 @@ SIMPLE_JWT = {
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
         "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
-    }
+    },
+    "DEFAULT_API_URL": "https://qadamavia.uz:1338",
 }
 
 CELERY_BROKER_URL = os.environ.get(
@@ -217,15 +218,6 @@ SMS_CLIENT_CLASS = "users.api_clients.eskiz_sms_client.EskizSmsClient"
 
 
 ASGI_APPLICATION = "config.asgi.application"
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("redis", 6379)],
-        },
-    },
-}
 
 LOGGING = {
     "version": 1,
