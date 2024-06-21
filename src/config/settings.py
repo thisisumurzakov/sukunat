@@ -181,7 +181,7 @@ SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
         "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
     },
-    "DEFAULT_API_URL": "https://qadamavia.uz:1338",
+    "DEFAULT_API_URL": os.environ.get("SWAGGER_DEFAULT_API_URL"),
 }
 
 CELERY_BROKER_URL = os.environ.get(
@@ -244,3 +244,5 @@ LOGGING = {
 
 
 CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_HOSTS").split(" ")
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
