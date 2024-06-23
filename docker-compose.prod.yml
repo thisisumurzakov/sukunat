@@ -75,8 +75,8 @@ services:
     depends_on:
       - db
       - redis
-    ports:
-      - "9001:9001"
+#    ports:
+#      - "9001:9001"
 
 
 volumes:
