@@ -67,7 +67,7 @@ services:
     build:
       context: ./src
       dockerfile: Dockerfile
-    command: daphne -b 0.0.0.0 -e ssl:9001:privateKey=/etc/letsencrypt/live/qadamavia.uz/privkey.pem:certKey=/etc/letsencrypt/live/qadamavia.uz/fullchain.pem config.asgi:application
+    command: daphne -e ssl:9001:privateKey=/etc/letsencrypt/live/qadamavia.uz/privkey.pem:certKey=/etc/letsencrypt/live/qadamavia.uz/fullchain.pem config.asgi:application
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - ./src/:/usr/src/src/
