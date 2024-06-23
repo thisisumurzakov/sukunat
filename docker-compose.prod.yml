@@ -25,7 +25,6 @@ services:
   nginx:
     build: ./nginx
     volumes:
-      - /etc/letsencrypt:/etc/letsencrypt:ro
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
       - /etc/letsencrypt:/etc/letsencrypt:ro
