@@ -13,5 +13,7 @@ class ActiveBannerView(APIView):
 
     def get(self, request):
         active_banners = Banner.objects.filter(is_active=True).order_by("-created_at")
-        serializer = BannerSerializer(active_banners, many=True)
+        serializer = BannerSerializer(
+            active_banners, many=True, context={"request": request}
+        )
         return Response(serializer.data)
