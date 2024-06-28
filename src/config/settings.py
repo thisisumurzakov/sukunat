@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "articles",
     "sos",
     "forum",
+    "common",
 ]
 
 MIDDLEWARE = [

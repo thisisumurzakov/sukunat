@@ -26,6 +26,7 @@ class VideoSerializer(serializers.Serializer):
     duration = serializers.DurationField()
     created_at = serializers.DateTimeField()
     updated_at = serializers.DateTimeField()
+    video_course = VideoCourseSerializer()
 
     # class Meta:
     #     model = Video

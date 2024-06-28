@@ -2,6 +2,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from config.pagination import StandardResultsPagination
+from rest_framework.response import Response
 
 from .models import VideoCourse, Video
 from .serializers import VideoCourseSerializer, VideoSerializer
@@ -28,3 +29,23 @@ class VideoList(ListAPIView):
         """
         video_course_id = self.kwargs["video_course_id"]
         return Video.objects.filter(video_course_id=video_course_id)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            video_course = VideoCourse.objects.get(id=self.kwargs["video_course_id"])
+            video_course_serializer = VideoCourseSerializer(video_course)
+
+            paginated_response = self.get_paginated_response(serializer.data)
+            paginated_response.data["video_course"] = video_course_serializer.data
+            return paginated_response
+
+        serializer = self.get_serializer(queryset, many=True)
+        video_course = VideoCourse.objects.get(id=self.kwargs["video_course_id"])
+        video_course_serializer = VideoCourseSerializer(video_course)
+        return Response(
+            {"video_course": video_course_serializer.data, "results": serializer.data}
+        )

@@ -42,4 +42,5 @@ urlpatterns = [
     path("v1/articles/", include("articles.urls")),
     path("v1/sos/", include("sos.urls")),
     path("v1/forum/", include("forum.urls")),
+    path("v1/common/", include("common.urls")),
 ]
