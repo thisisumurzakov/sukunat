@@ -243,11 +243,9 @@ LOGGING = {
 }
 
 
-CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_HOSTS").split(" ")
-
-
 # Use HTTPS URLs when calling build_absolute_uri()
 if os.environ.get("SECURE_SSL_REDIRECT"):
+    CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_HOSTS").split(" ")
     USE_X_FORWARDED_HOST = True
     USE_X_FORWARDED_PORT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
