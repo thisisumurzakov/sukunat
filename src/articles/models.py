@@ -29,7 +29,7 @@ class Article(models.Model):
         self.read_time = self.calculate_read_time(self.description)
         super().save(*args, **kwargs)
 
-    def calculate_read_time(text):
+    def calculate_read_time(self, text):
         words_per_minute = 200
         words = text.split()
         num_words = len(words)
