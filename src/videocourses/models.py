@@ -28,11 +28,14 @@ class VideoCourse(models.Model):
 
 
 class Video(models.Model):
+    image = models.ImageField(upload_to="videos/", null=True, blank=True)
     title = models.CharField(max_length=250)
+    description = models.TextField(null=True, blank=True)
     video_course = models.ForeignKey(
         VideoCourse, on_delete=models.CASCADE, related_name="videos"
     )
     youtube_url = models.URLField(max_length=200)
+    youtube_id = models.CharField(max_length=100, null=True, blank=True)
     duration = models.DurationField()  # Stores duration as timedelta
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

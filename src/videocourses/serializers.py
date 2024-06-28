@@ -18,8 +18,11 @@ class VideoCourseSerializer(serializers.Serializer):
 
 class VideoSerializer(serializers.Serializer):
     id = serializers.IntegerField()
+    image = serializers.ImageField()
     title = serializers.CharField()
+    description = serializers.CharField()
     youtube_url = serializers.URLField()
+    youtube_id = serializers.CharField()
     duration = serializers.DurationField()
     created_at = serializers.DateTimeField()
     updated_at = serializers.DateTimeField()
