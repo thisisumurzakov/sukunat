@@ -90,7 +90,9 @@ class VerifyCodeView(APIView):
                     {
                         "refresh": str(refresh),
                         "access": str(refresh.access_token),
-                        "full_name": user.get_full_name(),
+                        "full_name": user.get_full_name()
+                        if user.first_name and user.last_name
+                        else None,
                     },
                     status=status.HTTP_200_OK,
                 )
