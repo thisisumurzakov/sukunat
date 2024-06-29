@@ -18,6 +18,13 @@ class CategoryListView(ListAPIView):
     def get_queryset(self):
         return Category.objects.filter(is_active=True)
 
+    def get_serializer_context(self):
+        """
+        Overriding get_serializer_context to add request to the context.
+        """
+        context = super(CategoryListView, self).get_serializer_context()
+        return context
+
 
 class ArticleListView(ListAPIView):
     permission_classes = [IsAuthenticated]
