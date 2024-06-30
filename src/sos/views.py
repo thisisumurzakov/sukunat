@@ -67,6 +67,7 @@ class SendDistressSignalView(APIView):
             contact = Contact.objects.get(user=request.user)
 
             tracking_id = uuid.uuid4()
+            TrackingSession.objects.create(track_id=tracking_id, user=request.user)
             live_tracking_url = request.build_absolute_uri(
                 reverse("live_tracking", args=[tracking_id])
             )
