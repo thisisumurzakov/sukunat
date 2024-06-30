@@ -16,5 +16,7 @@ class Contact(models.Model):
 class TrackingSession(models.Model):
     track_id = models.CharField(max_length=36, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    initial_latitude = models.CharField(max_length=50, null=True, blank=True)
+    initial_longitude = models.CharField(max_length=50, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
