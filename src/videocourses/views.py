@@ -37,7 +37,9 @@ class VideoList(ListAPIView):
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             video_course = VideoCourse.objects.get(id=self.kwargs["video_course_id"])
-            video_course_serializer = VideoCourseSerializer(video_course)
+            video_course_serializer = VideoCourseSerializer(
+                video_course, context={"request": request}
+            )
 
             paginated_response = self.get_paginated_response(serializer.data)
             paginated_response.data["video_course"] = video_course_serializer.data
