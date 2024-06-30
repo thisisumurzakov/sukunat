@@ -64,6 +64,13 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+    def get_profile_photo(self, obj):
+        return (
+            obj.profile.profile_photo.url
+            if hasattr(obj, "profile") and obj.profile.profile_photo
+            else None
+        )
+
 
 class LogutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
