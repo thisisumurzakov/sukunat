@@ -44,7 +44,6 @@ class PostSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "is_author",
-            "parent",
         ]
         extra_kwargs = {
             "user": {"read_only": True},
@@ -77,3 +76,10 @@ class PostDetailSerializer(PostSerializer):
         return PostSerializer(
             replies, many=True, context={"request": self.context.get("request")}
         ).data
+
+
+class UserRepliesSerializer(PostSerializer):
+    parent = PostSerializer()
+
+    class Meta(PostSerializer.Meta):
+        fields = PostSerializer.Meta.fields + ["parent"]

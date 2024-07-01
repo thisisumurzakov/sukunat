@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Post
-from .serializers import PostSerializer, PostDetailSerializer
+from .serializers import PostSerializer, PostDetailSerializer, UserRepliesSerializer
 
 
 class PostListView(ListCreateAPIView):
@@ -51,6 +51,12 @@ class PostListView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def get_serializer_class(self):
+        if "type" in self.request.query_params:
+            if self.request.query_params["type"] == "user_replies":
+                return UserRepliesSerializer
+        return super().get_serializer_class()
 
 
 class PostDetailView(RetrieveUpdateDestroyAPIView):
