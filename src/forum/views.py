@@ -16,7 +16,23 @@ class PostListView(ListCreateAPIView):
     pagination_class = StandardCursorPagination
 
     def get_queryset(self):
-        return Post.objects.filter(parent__isnull=True).prefetch_related("tags")
+        user = self.request.user
+        content_type = self.request.query_params.get("type", "all")
+
+        if content_type == "user_posts":
+            return Post.objects.filter(user=user, parent__isnull=True).prefetch_related(
+                "tags"
+            )
+        elif content_type == "user_replies":
+            return (
+                Post.objects.filter(user=user, parent__isnotnull=True)
+                .select_related("parent")
+                .prefetch_related("tags")
+            )
+        elif content_type == "all":
+            return Post.objects.filter(parent__isnull=True).prefetch_related("tags")
+        else:
+            return Post.objects.none()  # Safely handle unexpected values
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
