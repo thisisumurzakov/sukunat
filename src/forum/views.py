@@ -40,7 +40,7 @@ class PostListView(ListCreateAPIView):
             )
         elif content_type == "user_replies":
             return (
-                Post.objects.filter(user=user, parent__isnotnull=True)
+                Post.objects.filter(user=user, parent__isnull=False)
                 .select_related("parent")
                 .prefetch_related("tags")
             )
