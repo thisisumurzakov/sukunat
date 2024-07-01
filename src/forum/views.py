@@ -1,3 +1,5 @@
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
@@ -14,6 +16,19 @@ class PostListView(ListCreateAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = StandardCursorPagination
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                "type",
+                openapi.IN_QUERY,
+                description="Filter posts by type: 'user_posts', 'user_replies', or 'all'. Default is 'all'.",
+                type=openapi.TYPE_STRING,
+            )
+        ]
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         user = self.request.user
