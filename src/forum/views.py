@@ -9,7 +9,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Post
-from .serializers import PostSerializer, PostDetailSerializer, UserRepliesSerializer
+from .serializers import (
+    PostSerializer,
+    PostDetailSerializer,
+    UserRepliesSerializer,
+    ReplyCreateSerializer,
+)
 
 
 class PostListView(ListCreateAPIView):
@@ -79,7 +84,7 @@ class ReplyCreateView(APIView):
 
         data = request.data.copy()
         data["parent"] = parent_post.id
-        serializer = UserRepliesSerializer(data=data, context={"request": request})
+        serializer = ReplyCreateSerializer(data=data, context={"request": request})
 
         if serializer.is_valid():
             serializer.save(user=request.user)

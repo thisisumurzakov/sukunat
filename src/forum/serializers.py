@@ -83,3 +83,8 @@ class UserRepliesSerializer(PostSerializer):
 
     class Meta(PostSerializer.Meta):
         fields = PostSerializer.Meta.fields + ["parent"]
+
+
+class ReplyCreateSerializer(PostSerializer):
+    class Meta(PostSerializer.Meta):
+        fields = PostSerializer.Meta.fields + ["parent"]
