@@ -79,7 +79,7 @@ class ReplyCreateView(APIView):
 
         data = request.data.copy()
         data["parent"] = parent_post.id
-        serializer = PostSerializer(data=data, context={"request": request})
+        serializer = UserRepliesSerializer(data=data, context={"request": request})
 
         if serializer.is_valid():
             serializer.save(user=request.user)
