@@ -1,5 +1,6 @@
 from rest_framework.pagination import CursorPagination, PageNumberPagination
 from rest_framework.response import Response
+from urllib.parse import urlparse, parse_qs
 
 
 class StandardResultsPagination(PageNumberPagination):
@@ -18,14 +19,16 @@ class StandardCursorPagination(CursorPagination):
     def get_paginated_response(self, data):
         return Response(
             {
-                "next": self.encode_cursor(self.get_next_link()),
-                "previous": self.encode_cursor(self.get_previous_link()),
+                "next": self.get_cursor_value(self.get_next_link()),
+                "previous": self.get_cursor_value(self.get_previous_link()),
                 "results": data,
             }
         )
 
-    def encode_cursor(self, url):
+    def get_cursor_value(self, url):
         if url is None:
             return None
-        # Extract the cursor value from the URL
-        return url.split("cursor=")[-1]
+        # Parse the URL and extract the cursor value
+        parsed_url = urlparse(url)
+        cursor_value = parse_qs(parsed_url.query).get("cursor")
+        return cursor_value[0] if cursor_value else None
