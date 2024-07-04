@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from config.utils import get_sms_client
+from config.utils import get_sms_client, get_random_color
 from .models import User, FCMToken
 from .serializers import (
     UserSerializer,
@@ -77,6 +77,7 @@ class VerifyCodeView(APIView):
             with transaction.atomic():
                 user, created = User.objects.get_or_create(phone_number=phone_number)
                 if created:
+                    user.color = get_random_color()
                     user.set_unusable_password()
                     user.save()
 

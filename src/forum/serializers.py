@@ -17,7 +17,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "profile_photo"]
+        fields = ["first_name", "last_name", "profile_photo", "color"]
 
     def get_profile_photo(self, obj):
         return (

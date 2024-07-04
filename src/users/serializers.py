@@ -36,6 +36,7 @@ class VerifyCodeSerializer(BasePhoneSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     profile_photo = serializers.SerializerMethodField()
+    color = serializers.CharField(read_only=True)
 
     class Meta:
         model = User
@@ -47,6 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
             "email",
             "is_email_verified",
             "profile_photo",
+            "color",
         )
         read_only_fields = ("phone_number", "is_email_verified", "id")
 

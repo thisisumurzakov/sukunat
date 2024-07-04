@@ -55,6 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
+    color = models.CharField(max_length=7, default="#81C784")
 
     objects = UserManager()
 
