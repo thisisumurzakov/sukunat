@@ -1,5 +1,6 @@
 from drf_yasg.utils import swagger_auto_schema
 from groq import Groq
+from openai import OpenAI
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -26,16 +27,18 @@ class ChatAPIView(APIView):
 
         # Configure the prompt for the ChatGPT model
         try:
-            response = openai.ChatCompletion.create(
-                model="gpt-4",
-                messages=[
+            client = OpenAI(
+                api_key=settings.OPENAI_API_KEY,
+            )
+            response = client.completions.create(
+                model="gpt-3.5-turbo-instruct",
+                prompt=[
                     {
                         "role": "system",
                         "content": "Your name is Kenai. You are a psychologist helping women.",
                     },
                     {"role": "user", "content": user_message},
                 ],
-                api_key=settings.OPENAI_API_KEY,
             )
 
             # Save the conversation
