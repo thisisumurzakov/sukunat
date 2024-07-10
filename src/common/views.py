@@ -17,3 +17,15 @@ class ActiveBannerView(APIView):
             active_banners, many=True, context={"request": request}
         )
         return Response(serializer.data)
+
+
+class KenaiAPIView(APIView):
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
+    def post(self, request):
+        user_message = request.data.get("message")
+        if not user_message:
+            return Response(status=400)
+        return Response(data={"response": "Erkin make a payment to openai!"})
