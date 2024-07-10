@@ -1,9 +1,10 @@
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Banner
-from .serializers import BannerSerializer
+from .serializers import BannerSerializer, KenaiMessageSerializer
 
 
 class ActiveBannerView(APIView):
@@ -20,12 +21,14 @@ class ActiveBannerView(APIView):
 
 
 class KenaiAPIView(APIView):
-    permission_classes = [
-        IsAuthenticated,
-    ]
+    permission_classes = (IsAuthenticated,)
 
+    @swagger_auto_schema(request_body=KenaiMessageSerializer)
     def post(self, request):
-        user_message = request.data.get("message")
-        if not user_message:
-            return Response(status=400)
-        return Response(data={"response": "Erkin make a payment to openai!"})
+        serializer = KenaiMessageSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(
+            data={
+                "response": f"Erkin make a payment to openai!\n{request.user.get_full_name()}'s message was: {serializer.validated_data['message']}"
+            }
+        )
